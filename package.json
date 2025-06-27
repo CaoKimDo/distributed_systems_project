@@ -1,0 +1,20 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "Smart farming with web service and pub-sub model",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "CaoKimDo",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.6.0",
+    "express": "^5.1.0",
+    "mqtt": "^5.13.1",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.2"
+  }
+}
