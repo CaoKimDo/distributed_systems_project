@@ -16,7 +16,7 @@ const pool = new Pool({
     port: 8888,
 });
 
-// '/hallo' is a common API URL
+// '/house/mushroom' is a common API URL
 app.use('/house/mushroom', require('./routes'));
 
 app.listen(PORT, () => {
