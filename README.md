@@ -1,3 +1,6 @@
 Topic: Smart farming with web service and pub-sub model.
 
 Description: Assume that we have a plant in particular; let's say we have a mushroom house farm. We have a minimum of 3 sensors: humidity, temperature, and wind. Everything is in a simulation; we don't need to have an ESP32 board. We need to implement a pub-sub model (MQTT) and some kind of service. For example, if the temperature is too low, the system will turn on the AC to balance out the farm. Or if the dirt is too dry, then we can warn the farmer.
+
+Install packages via cmd:
+npm install dotenv express mqtt nodemon pg
