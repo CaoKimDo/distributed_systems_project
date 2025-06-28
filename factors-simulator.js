@@ -4,9 +4,9 @@ const client = mqtt.connect('mqtt://localhost');
 // Initial environment (optimal state)
 let environment = {
     Airflow: 1.5,
-    Humidity: 85,
+    Humidity: 88,
     Light: 1,  // 1 = ON, 0 = OFF
-    Moisture: 55,
+    Moisture: 60,
     Temperature: 22
 };
 
@@ -14,7 +14,7 @@ let environment = {
 let actuators = {
     Ventilation_fan: false,
     Humidifier: false,
-    LED_Grow_Lights: false,
+    LED_grow_lights: false,
     Water_pump: false,
     Heater: false,
     Cooler: false
@@ -25,41 +25,42 @@ function clamp(value, min, max) {
 }
 
 function updateEnvironment() {
-    // Airflow (increases with fan)
+    // Airflow (based on ventilation fan)
     environment.Airflow = actuators.Ventilation_fan
-        ? 1.5 + Math.random() * 1
-        : 0.5 + Math.random() * 0.5;
+        ? 1.5 + Math.random() * 1  // Fan ON: 1.5 – 2.5 m/s
+        : 0.3 + Math.random() * 0.7;   // Fan OFF: 0.3 – 1.0 m/s (natural drift)
 
-    // Humidity
+    // Humidity (increased by humidifier, reduced by airflow)
     if (actuators.Humidifier)
         environment.Humidity += 0.5;
     if (actuators.Ventilation_fan)
         environment.Humidity -= 0.4;
+    environment.Humidity -= environment.Airflow * 0.1;  // Airflow causes humidity loss.
+    environment.Humidity += (Math.random() - 0.5) * 0.2;  // Natural drift
 
-    // Light
-    environment.Light = actuators.LED_Grow_Lights ? 1 : 0;
+    // Light (binary from LED)
+    environment.Light = actuators.LED_grow_lights ? 1 : 0;
 
-    // Moisture
+    // Moisture (increased by water pump, reduced by temp & evaporation)
     if (actuators.Water_pump)
         environment.Moisture += 0.7;
-    environment.Moisture -= 0.2;  // Natural evaporation
+    environment.Moisture -= 0.2 + (environment.Temperature - 20) * 0.02;  // Warmer = more evaporation
+    environment.Moisture += (Math.random() - 0.5) * 0.2;  // Natural drift
 
-    // Temperature
+    // Temperature (affected by heater, cooler & ventilation fan)
     if (actuators.Heater)
         environment.Temperature += 0.3;
     if (actuators.Cooler)
         environment.Temperature -= 0.3;
-
-    // Natural drift
-    environment.Humidity += (Math.random() - 0.5) * 0.2;
-    environment.Moisture += (Math.random() - 0.5) * 0.2;
-    environment.Temperature += (Math.random() - 0.5) * 0.2;
+    if (actuators.Ventilation_fan)
+        environment.Temperature -= 0.05;  // Slight cooling effect if the ventilation fan is running.
+    environment.Temperature += (Math.random() - 0.5) * 0.2;  // Natural drift
 
     // Clamp values
-    environment.Temperature = clamp(environment.Temperature, 10, 35);  // 10 – 35°C
-    environment.Humidity = clamp(environment.Humidity, 40, 100);  // 40 - 100%
-    environment.Airflow = clamp(environment.Airflow, 0, 5);  // 0 - 5m/s
-    environment.Moisture = clamp(environment.Moisture, 20, 100);  // 20 - 100%
+    environment.Temperature = clamp(environment.Temperature, 12, 28);  // 12 – 28°C
+    environment.Humidity = clamp(environment.Humidity, 75, 95);  // 75 - 95%
+    environment.Airflow = clamp(environment.Airflow, 0.3, 3.0);  // 0.3 - 3.0m/s
+    environment.Moisture = clamp(environment.Moisture, 50, 70);  // 50 - 70%
 }
 
 function publishSensorData() {

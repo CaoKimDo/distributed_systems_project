@@ -57,7 +57,7 @@
     (
         "Ventilation_fan" boolean NOT NULL,
         "Humidifier" boolean NOT NULL,
-        "LED_Grow_Lights" boolean NOT NULL,
+        "LED_grow_lights" boolean NOT NULL,
         "Water_pump" boolean NOT NULL,
         "Heater" boolean NOT NULL,
         "Cooler" boolean NOT NULL,
@@ -95,6 +95,6 @@
 **• RUNNING:**
 
 0. Modify PG information in .env
-1. node sensors-simulator.js
+1. node factors-simulator.js
 2. node server.js
 3. Use browser/Postman to send requests

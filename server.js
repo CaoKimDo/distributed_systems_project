@@ -31,7 +31,7 @@ client.on('message', async (topic, message) => {
     }
     
     /*// Decision logic (examples)
-    if (data.Temperature < ...)
+    if (data.Temperature < 18)
         client.publish(`${commonAPIURL}/action`, 'Turn on heater');
     if (data.Humidity < ...)
         client.publish(`${commonAPIURL}/action`, '...');
