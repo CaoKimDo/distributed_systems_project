@@ -5,7 +5,7 @@ const pool = require('./database-connection')
 router.route('/').get(async (req, res) => {
     // Welcome to the mushroom house monitoring site!
     try {
-        const result = await pool.query('SELECT * FROM mushroom_house_sensors ORDER BY timestamp DESC LIMIT 10');
+        const result = await pool.query('SELECT * FROM "FACTORS" ORDER BY Timestamp DESC LIMIT 10');
         res.json(result.rows);
     } catch (err) {
         console.error('Database SELECT error:', err);
