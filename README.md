@@ -25,76 +25,74 @@
         IS 'A time-series database for monitoring and managing environmental conditions, actuator states, and automated controls in an indoor mushroom cultivation system.';
 
 **• CREATING TABLES:**
+1. FACTORS
 
-    1. FACTORS
+    -- Table: public.FACTORS
 
-        -- Table: public.FACTORS
+    -- DROP TABLE IF EXISTS public."FACTORS";
 
-        -- DROP TABLE IF EXISTS public."FACTORS";
+    CREATE TABLE IF NOT EXISTS public."FACTORS"
+    (
+        "Airflow" real NOT NULL,
+        "Humidity" real NOT NULL,
+        "Light" real NOT NULL,
+        "Moisture" real NOT NULL,
+        "Temperature" real NOT NULL,
+        "Timestamp" timestamp without time zone NOT NULL,
+        CONSTRAINT "FACTORS_pkey" PRIMARY KEY ("Timestamp")
+    )
 
-        CREATE TABLE IF NOT EXISTS public."FACTORS"
-        (
-            "Airflow" real NOT NULL,
-            "Humidity" real NOT NULL,
-            "Light" real NOT NULL,
-            "Moisture" real NOT NULL,
-            "Temperature" real NOT NULL,
-            "Timestamp" timestamp without time zone NOT NULL,
-            CONSTRAINT "FACTORS_pkey" PRIMARY KEY ("Timestamp")
-        )
+    TABLESPACE pg_default;
 
-        TABLESPACE pg_default;
+    ALTER TABLE IF EXISTS public."FACTORS"
+        OWNER to postgres;
+2. ACTUATORS
 
-        ALTER TABLE IF EXISTS public."FACTORS"
-            OWNER to postgres;
+    -- Table: public.ACTUATORS
 
-    2. ACTUATORS
+    -- DROP TABLE IF EXISTS public."ACTUATORS";
 
-        -- Table: public.ACTUATORS
+    CREATE TABLE IF NOT EXISTS public."ACTUATORS"
+    (
+        "Ventilation_fan" boolean NOT NULL,
+        "Humidifier" boolean NOT NULL,
+        "LED_Grow_Lights" boolean NOT NULL,
+        "Water_pump" boolean NOT NULL,
+        "Heater" boolean NOT NULL,
+        "Cooler" boolean NOT NULL,
+        "Timestamp" timestamp without time zone NOT NULL,
+        CONSTRAINT "ACTUATORS_pkey" PRIMARY KEY ("Timestamp")
+    )
 
-        -- DROP TABLE IF EXISTS public."ACTUATORS";
+    TABLESPACE pg_default;
 
-        CREATE TABLE IF NOT EXISTS public."ACTUATORS"
-        (
-            "Ventilation_fan" boolean NOT NULL,
-            "Humidifier" boolean NOT NULL,
-            "LED_Grow_Lights" boolean NOT NULL,
-            "Water_pump" boolean NOT NULL,
-            "Heater" boolean NOT NULL,
-            "Cooler" boolean NOT NULL,
-            "Timestamp" timestamp without time zone NOT NULL,
-            CONSTRAINT "ACTUATORS_pkey" PRIMARY KEY ("Timestamp")
-        )
+    ALTER TABLE IF EXISTS public."ACTUATORS"
+        OWNER to postgres;
 
-        TABLESPACE pg_default;
+3. AUTOMATION
 
-        ALTER TABLE IF EXISTS public."ACTUATORS"
-            OWNER to postgres;
-            
-    3. AUTOMATION
+    -- Table: public.AUTOMATION
 
-        -- Table: public.AUTOMATION
+    -- DROP TABLE IF EXISTS public."AUTOMATION";
 
-        -- DROP TABLE IF EXISTS public."AUTOMATION";
+    CREATE TABLE IF NOT EXISTS public."AUTOMATION"
+    (
+        "Airflow" boolean NOT NULL,
+        "Humidity" boolean NOT NULL,
+        "Light" boolean NOT NULL,
+        "Moisture" boolean NOT NULL,
+        "Temperature" boolean NOT NULL,
+        "Timestamp" timestamp without time zone NOT NULL,
+        CONSTRAINT "AUTOMATION_pkey" PRIMARY KEY ("Timestamp")
+    )
 
-        CREATE TABLE IF NOT EXISTS public."AUTOMATION"
-        (
-            "Airflow" boolean NOT NULL,
-            "Humidity" boolean NOT NULL,
-            "Light" boolean NOT NULL,
-            "Moisture" boolean NOT NULL,
-            "Temperature" boolean NOT NULL,
-            "Timestamp" timestamp without time zone NOT NULL,
-            CONSTRAINT "AUTOMATION_pkey" PRIMARY KEY ("Timestamp")
-        )
+    TABLESPACE pg_default;
 
-        TABLESPACE pg_default;
-
-        ALTER TABLE IF EXISTS public."AUTOMATION"
-            OWNER to postgres;
+    ALTER TABLE IF EXISTS public."AUTOMATION"
+        OWNER to postgres;
 
 **• RUNNING:**
-    0. Modify PG information in .env
-    1. node sensors-simulator.js
-    2. node server.js
-    3. Use browser/Postman to send requests
+0. Modify PG information in .env
+1. node sensors-simulator.js
+2. node server.js
+3. Use browser/Postman to send requests
