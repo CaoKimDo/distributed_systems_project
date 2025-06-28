@@ -25,7 +25,7 @@
         IS 'A time-series database for monitoring and managing environmental conditions, actuator states, and automated controls in an indoor mushroom cultivation system.';
 
 **• CREATING TABLES:**
-1. FACTORS
+**1. FACTORS**
 
     -- Table: public.FACTORS
 
@@ -46,7 +46,7 @@
 
     ALTER TABLE IF EXISTS public."FACTORS"
         OWNER to postgres;
-2. ACTUATORS
+**2. ACTUATORS**
 
     -- Table: public.ACTUATORS
 
@@ -69,7 +69,7 @@
     ALTER TABLE IF EXISTS public."ACTUATORS"
         OWNER to postgres;
 
-3. AUTOMATION
+**3. AUTOMATION**
 
     -- Table: public.AUTOMATION
 
@@ -92,6 +92,7 @@
         OWNER to postgres;
 
 **• RUNNING:**
+
 0. Modify PG information in .env
 1. node sensors-simulator.js
 2. node server.js
