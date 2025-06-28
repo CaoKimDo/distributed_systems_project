@@ -1,8 +1,6 @@
 const mqtt = require('mqtt');
 const client = mqtt.connect('mqtt://localhost');
 
-const topic = 'farm/field1/sensors_data';
-
 function generateData() {
     return {
         temperature: +(Math.random() * 10 + 15).toFixed(2),  // 15 – 25°C
@@ -15,7 +13,7 @@ function generateData() {
 client.on('connect', () => {
     setInterval(() => {
         const data = generateData();
-        client.publish("mushroom/sensor", JSON.stringify(data));
-        console.log("Published:", data);
+        client.publish('house/mushroom/sensors_data', JSON.stringify(data));
+        console.log('Published:', data);
     }, 5000);  // Every 5 seconds
 });
