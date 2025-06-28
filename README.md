@@ -25,6 +25,7 @@
         IS 'A time-series database for monitoring and managing environmental conditions, actuator states, and automated controls in an indoor mushroom cultivation system.';
 
 **• CREATING TABLES:**
+
     1. FACTORS
 
         -- Table: public.FACTORS
@@ -46,6 +47,7 @@
 
         ALTER TABLE IF EXISTS public."FACTORS"
             OWNER to postgres;
+
     2. ACTUATORS
 
         -- Table: public.ACTUATORS
@@ -68,6 +70,7 @@
 
         ALTER TABLE IF EXISTS public."ACTUATORS"
             OWNER to postgres;
+            
     3. AUTOMATION
 
         -- Table: public.AUTOMATION
