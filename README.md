@@ -4,6 +4,10 @@
 
 **• INSTALLING PACKAGES VIA CMD:** npm install dotenv express http-proxy-middleware mqtt nodemon pg
 
+**• INSTALLING NODE-RED (FOR DASHBOARD) VIA CMD:** npm install -g --unsafe-perm node-red
+
+**• CONFIGURING NODE-RED:** Open CMD, run: node-red, then minimize. Go to localhost:1880, open the top right menu or Ctrl + I to import the flows.json in this project.
+
 **• CREATING DATABASE:**
 
     -- Database: MUSHROOM_HOUSE
