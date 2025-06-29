@@ -1,5 +1,6 @@
 const mqtt = require('mqtt');
 const client = mqtt.connect('mqtt://localhost');
+const topic = 'house/mushroom';
 
 // Initial environment (optimal state)
 let environment = {
@@ -22,7 +23,7 @@ let actuators = {
 
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
-}
+};
 
 function updateEnvironment() {
     // Airflow (based on ventilation fan)
@@ -61,7 +62,7 @@ function updateEnvironment() {
     environment.Humidity = clamp(environment.Humidity, 75, 95);  // 75 - 95%
     environment.Airflow = clamp(environment.Airflow, 0.3, 3.0);  // 0.3 - 3.0m/s
     environment.Moisture = clamp(environment.Moisture, 50, 70);  // 50 - 70%
-}
+};
 
 function publishSensorData() {
     const data = {
@@ -73,12 +74,12 @@ function publishSensorData() {
         Timestamp: new Date().toISOString()
     };
 
-    client.publish('house/mushroom/sensors', JSON.stringify(data));
+    client.publish(`${topic}/sensors`, JSON.stringify(data));
     console.log('Published:', data);
-}
+};
 
 client.on('connect', () => {
-    client.subscribe('house/mushroom/actuators');
+    client.subscribe(`${topic}/actuators`);
     console.log('Subscribed to actuators');
     
     setInterval(() => {
@@ -88,7 +89,7 @@ client.on('connect', () => {
 });
 
 client.on('message', (topic, message) => {
-    if (topic === 'house/mushroom/actuators') {
+    if (topic === `${topic}/actuators`) {
         try {
             actuators = JSON.parse(message.toString());
             console.log('Received actuators\' state:', actuators);

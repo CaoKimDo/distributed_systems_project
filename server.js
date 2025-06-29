@@ -1,22 +1,22 @@
 const dotenv = require('dotenv').config();
 const express = require('express');
+const {createProxyMiddleware } = require('http-proxy-middleware');
 const mqtt = require('mqtt');
 
 const pool = require('./database-connection');
-const routes = require('./routes');
 
 const PORT = process.env.PORT;
-
 const app = express();
-app.use(express.json());
-
 const client = mqtt.connect('mqtt://localhost');
-const commonAPIURL = 'house/mushroom';
+const topic = 'house/mushroom';
 
 client.on('connect', () => {
-    client.subscribe(`${commonAPIURL}/sensors`);
-    console.log("Subscribed to sensors");
-})
+    client.subscribe(`${topic}/sensors`);
+    client.subscribe(`${topic}/action`);
+    client.subscribe(`${topic}/actuators`);
+    
+    console.log("Subscribed to sensors, action, and actuators");
+});
 
 client.on('message', async (topic, message) => {
     const data = JSON.parse(message.toString());
@@ -29,18 +29,19 @@ client.on('message', async (topic, message) => {
     } catch (err) {
         console.error("Database INSERT error:", err);
     }
-    
-    /*// Decision logic (examples)
-    if (data.Temperature < 18)
-        client.publish(`${commonAPIURL}/action`, 'Turn on heater');
-    if (data.Humidity < ...)
-        client.publish(`${commonAPIURL}/action`, '...');
-    if (data.Airflow > ...)
-        client.publish(`${commonAPIURL}/alert`, '...');*/
 });
 
-app.use(`/${commonAPIURL}`, routes);
+// Proxy / to the Node-RED dashboard
+app.use('/', createProxyMiddleware({
+    target: 'http://localhost:1880/ui',  // Node-RED dashboard URL
+    changeOrigin: true
+}));
+
+// Block all others
+app.use((req, res) => {
+    res.status(404).send(`Not available. Please visit http://localhost:${PORT} to access the mushroom house dashboard.`);
+});
 
 app.listen(PORT, () => {
-    console.log(`The server is running on PORT ${PORT}.`);
-})
+    console.log(`The server is running. The dashboard is available at http://localhost:${PORT}.`);
+});
