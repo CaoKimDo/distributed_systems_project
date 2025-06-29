@@ -12,14 +12,7 @@ let environment = {
 };
 
 // Initial actuators' state
-let actuators = {
-    Ventilation_fan: false,
-    Humidifier: false,
-    LED_grow_lights: false,
-    Water_pump: false,
-    Heater: false,
-    Cooler: false
-};
+let actuators = {};
 
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -89,12 +82,10 @@ client.on('connect', () => {
 });
 
 client.on('message', (topic, message) => {
-    if (topic === `${topic}/actuators`) {
-        try {
-            actuators = JSON.parse(message.toString());
-            console.log('Received actuators\' state:', actuators);
-        } catch (err) {
-            console.error('Error parsing actuators\' state:', err);
-        }
+    try {
+        actuators = JSON.parse(message.toString());
+        console.log('Received actuators\' state:', actuators);
+    } catch (err) {
+        console.error('Error parsing actuators\' state:', err);
     }
 });

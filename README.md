@@ -95,6 +95,4 @@
 **• RUNNING:**
 
 0. Modify PG information in .env
-1. node factors-simulator.js
-2. node server.js
-3. Use browser/Postman to send requests
+1. node server.js
