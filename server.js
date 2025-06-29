@@ -5,6 +5,7 @@ const mqtt = require('mqtt');
 
 const pool = require('./database-connection');
 require('./factors-simulator');
+const autoControl = require('./automatic-control');
 
 const PORT = process.env.PORT;
 const app = express();
@@ -67,6 +68,15 @@ client.on('message', async(msgTopic, message) => {
                     'INSERT INTO "FACTORS" VALUES ($1, $2, $3, $4, $5, $6)',
                     [data.Airflow, data.Humidity, data.Light, data.Moisture, data.Temperature, data.Timestamp]);
                 console.log('Received sensors\' data:', data);
+
+                const lastAutomationStates = await pool.query('SELECT * FROM "AUTOMATION" ORDER BY "Timestamp" DESC LIMIT 1');
+
+                autoControl({
+                    automation: lastAutomationStates.rows[0],
+                    sensors: data,
+                    client: client,
+                    topic: topic
+                });
             } catch (err) {
                 console.error('Database INSERT error:', err);
             }

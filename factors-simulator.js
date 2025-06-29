@@ -32,8 +32,8 @@ function updateEnvironment() {
     environment.Humidity -= environment.Airflow * 0.1;  // Airflow causes humidity loss.
     environment.Humidity += (Math.random() - 0.5) * 0.2;  // Natural drift
 
-    // Light (binary from LED)
-    environment.Light = actuators.LED_grow_lights ? 1 : 0;
+    // Light
+    environment.Light = 1;
 
     // Moisture (increased by water pump, reduced by temp & evaporation)
     if (actuators.Water_pump)
@@ -64,7 +64,7 @@ function publishSensorData() {
         Light: environment.Light,
         Moisture: +environment.Moisture.toFixed(2),
         Temperature: +environment.Temperature.toFixed(2),
-        Timestamp: new Date().toISOString()
+        Timestamp: new Date().toLocaleString()
     };
 
     client.publish(`${topic}/sensors`, JSON.stringify(data));

@@ -65,6 +65,8 @@
         CONSTRAINT "ACTUATORS_pkey" PRIMARY KEY ("Timestamp")
     )
 
+    INSERT INTO "ACTUATORS" VALUES (true, false, true, false, false, true, CURRENT_TIMESTAMP);
+
     TABLESPACE pg_default;
 
     ALTER TABLE IF EXISTS public."ACTUATORS"
@@ -87,6 +89,8 @@
         CONSTRAINT "AUTOMATION_pkey" PRIMARY KEY ("Timestamp")
     )
 
+    INSERT INTO "AUTOMATION" VALUES (true, true, true, true, true, CURRENT_TIMESTAMP);
+
     TABLESPACE pg_default;
 
     ALTER TABLE IF EXISTS public."AUTOMATION"
@@ -96,3 +100,5 @@
 
 0. Modify PG information in .env
 1. node server.js
+2. node-red
+3. Access the dashboard via either localhost:1880/ui or localhost:8888
